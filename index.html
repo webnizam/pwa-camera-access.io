@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Falcons.AI</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Falcons.AI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <link rel="shortcut icon" href="assets/images/favicon-32x32.png">
+  <link rel="shortcut icon" href="assets/images/favicon-32x32.png">
 
-    <!--All css  are here-->
+  <!--All css  are here-->
 
-    <!--Bootstrap css here-->
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
+  <!--Bootstrap css here-->
+  <link rel="stylesheet" href="assets/css/bootstrap.css">
 
-    <!--Font-Awsome css here-->
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-
-
-    <!--Custon css here-->
-    <link rel="stylesheet" href="assets/css/custom.css">
+  <!--Font-Awsome css here-->
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
 
 
-    <!--Responsive css here-->
-    <link rel="stylesheet" href="assets/css/responsive.css">
-<style>
-    video {  
+  <!--Custon css here-->
+  <link rel="stylesheet" href="assets/css/custom.css">
+  <link rel="stylesheet" href="assets/css/progress-waves.css">
+
+
+  <!--Responsive css here-->
+  <link rel="stylesheet" href="assets/css/responsive.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+  <style>
+    video {
       width: 100vw;
       height: 100vh;
       object-fit: cover;
@@ -33,9 +39,9 @@
       z-index: -1;
     }
 
-    #Analysis_results{
+    #Analysis_results {
       bottom: 0px;
-      background-color: rgba(0, 0, 0, .35);  
+      background-color: rgba(0, 0, 0, .35);
       backdrop-filter: blur(5px);
     }
 
@@ -43,101 +49,231 @@
       height: 50px;
       vertical-align: center;
     }
-</style>
+  </style>
 
 </head>
+
 <body id="index" class="home">
-<div class="se-pre-con"></div>
+  <div class="se-pre-con"></div>
 
-<!-- NAVIGATION -->
-<nav class="navbar navbar-default">
+  <!-- NAVIGATION -->
+  <nav class="navbar navbar-default">
     <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header logo">
-            <a class="navbar-brand" href="https://falcons.ai"><img class="img-responsive" src="assets/images/pag-logo-white_2094_-01.png"></a>
-        </div>
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header logo">
+        <a class="navbar-brand" href="https://falcons.ai"><img class="img-responsive"
+            src="assets/images/pag-logo-white_2094_-01.png"></a>
+      </div>
     </div>
-</nav>
-<!-- NAVIGATION -->
-<video id="player" controls autoplay></video>
+  </nav>
 
-
-
-
-
-
-
-<!-- Copyright Section -->
-<section class="navbar-fixed-bottom">
-    <div class="container">
-        <div class="row  text-center">
-
-            <table class="table"  id="Analysis_results">
-              <tbody>
-                <tr>
-                  <td class="text-center"><img src="assets/images/01-light-vision-future-look-perspective-idea-insight-eye.svg" id="capture" width="50" height="50"></td>
-                  <td class="text-center"><a id="download" download="falcImage.jpg" href="" onclick="download_img(this);"><canvas id="canvas" width="10px" height="10px"></canvas></a></td>
-                  <td class="text-center"><img src="assets/images/07-light-no-cross-cancel-close-remove-delete-mark.svg" id="clear" width="50" height="50"></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <script>
-              const player = document.getElementById('player');
-              const canvas = document.getElementById('canvas');
-              const context = canvas.getContext('2d');
-              const captureButton = document.getElementById('capture');
-              const clearButton = document.getElementById('clear');
-              const constraints = {
-                video: { facingMode: "environment" },
-              };
-
-              captureButton.addEventListener('click', () => {
-                // Draw the video frame to the canvas.
-                // Resize the Canvas
-                canvas.width = 250;
-                canvas.height = 200;
-                // Draw image frame to the canvas
-                context.drawImage(player, 0, 0, canvas.width, canvas.height);
-              });
-
-              // Attach the video stream to the video element and autoplay.
-              navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-                player.srcObject = stream;
-              });
-
-              clearButton.addEventListener('click', () => {
-                // Draw the video frame to the canvas.
-                // Resize the Canvas back small
-                canvas.width = 10;
-                canvas.height = 10;
-                // Clear the canvas contents
-                context.clearRect(0, 0, canvas.width, canvas.height);
-              });
-
-              download_img = function(el) {
-                  // get image URI from canvas object
-                  var imageURI = canvas.toDataURL("image/jpg");
-                  el.href = imageURI;
-                };
-            </script>
-
-        </div>
+  <div id="loader" class="container"
+    style="display: none; position:fixed; top:50%;left:50%; transform: translate(-50%, -50%);">
+    <div style="height: 200;" class="in-progress">
     </div>
-</section>
-<!-- Copyright Section -->
+  </div>
 
 
-<!-- All Javascripts -->
-<!-- Jquery -->
-<script src="assets/js/jquery.min.js"></script>
 
-<!-- Bootstrap -->
-<script type="text/javascript" src="assets/js/bootstrap.js"></script>
 
-<!-- Common -->
-<script type="text/javascript" src="assets/js/common.js"></script>
+  <!-- NAVIGATION -->
+  <video id="player" controls autoplay></video>
 
-<!-- All Javascripts -->
+  <div class="container" id="result" style="display: none;">
+    <div class="card">
+      <div class="card-header">
+        Scanned Plates
+      </div>
+      <div class="card-body">
+        <h5 class="card-title" id="cardTitle"></h5>
+        <p class="card-text" id="cardResult"></p>
+        <p class="card-text" id="cardEmpty"> No plates found</p>
+        <!-- <button class="button btn-primary" onclick="closeResult(this);">Close</button> -->
+      </div>
+      <img class="card-img-bottom" src="..." alt="Card image cap" id="cardImage">
+      <div class="card-footer">
+        <a href="#" class="btn btn-primary btn-block" onclick="closeResult(this);">Close</a>
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- Copyright Section -->
+  <section id="faiNavBar" class="navbar-fixed-bottom">
+    <div style="width: 100% !important;">
+      <div class="row text-center">
+
+        <table class="table" style="width: 100% !important;" id="Analysis_results">
+          <tbody>
+            <tr>
+              <td style="display: none;" class="text-center"><img
+                  src="assets/images/01-light-vision-future-look-perspective-idea-insight-eye.svg" id="capture"
+                  width="50" height="50"></td>
+
+              <td class="text-center">
+                <button id="scanButton" type="button" style="height: 60px; width:150px" class="btn btn-primary btn-lg"
+                  onclick="scanImage(this);">Scan</button>
+              </td>
+
+              <td style="display: none;" class="text-center"><a id="download" download="falcImage.jpg" href=""
+                  onclick="download_img(this);"><canvas id="canvas" width="10px" height="10px"></canvas></a></td>
+              <td style="display: none;" class="text-center"><img
+                  src="assets/images/07-light-no-cross-cancel-close-remove-delete-mark.svg" id="clear" width="50"
+                  height="50"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <canvas style="display: none;" id="screenshot"
+          style="height: calc(100vh - 142px); width: 100vw; display: block; border: 1px solid black;"></canvas>
+
+        <script>
+          const player = document.getElementById('player');
+          const result_view = document.getElementById('result');
+          const faiNavBar = document.getElementById('faiNavBar');
+          const canvas = document.getElementById('canvas');
+          const screenshot = document.getElementById('screenshot');
+          const context = canvas.getContext('2d');
+          const context_scr = screenshot.getContext('2d');
+          const captureButton = document.getElementById('capture');
+          const clearButton = document.getElementById('clear');
+          const constraints = {
+            video: { facingMode: "environment" },
+          };
+          localhost
+          const baseUrl = 'http://:8000'
+
+          captureButton.addEventListener('click', () => {
+            // Draw the video frame to the canvas.
+            // Resize the Canvas
+            canvas.width = 250;
+            canvas.height = 200;
+            // Draw image frame to the canvas
+            context.drawImage(player, 0, 0, canvas.width, canvas.height);
+          });
+
+          // Attach the video stream to the video element and autoplay.
+          navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+            player.srcObject = stream;
+          });
+
+          clearButton.addEventListener('click', () => {
+            // Draw the video frame to the canvas.
+            // Resize the Canvas back small
+            canvas.width = 10;
+            canvas.height = 10;
+            // Clear the canvas contents
+            context.clearRect(0, 0, canvas.width, canvas.height);
+          });
+
+          closeResult = function (event) {
+            player.style.display = "block";
+            faiNavBar.style.display = "block";
+            result_view.style.display = "none";
+          }
+
+          dataURItoBlob = function (dataurl) {
+            var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+              bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+            while (n--) {
+              u8arr[n] = bstr.charCodeAt(n);
+            }
+
+            console.log(mime);
+            return new Blob([u8arr], { type: mime });
+          }
+
+          scanImage = function (event) {
+            console.log('Scanning...');
+
+            screenshot.width = player.videoWidth;
+            screenshot.height = player.videoHeight;
+            // Draw image frame to the canvas
+            context_scr.drawImage(player, 0, 0, screenshot.width, screenshot.height);
+
+            var formData = new FormData(),
+              uploadedImageName = 'image.jpg';
+
+            var imageURI = screenshot.toDataURL("image/jpg");
+
+
+            const blob = dataURItoBlob(imageURI);
+            // console.log(JSON.stringify(blob));
+
+            $("#loader").show();
+            formData.append("file", blob);
+            $.ajax({
+              data: formData,
+              type: "POST",
+              dataType: "JSON",
+              url: baseUrl + '/object-to-json',
+              processData: false,
+              dataType: "json",
+              contentType: false,
+              success: function (data) {
+                console.log(data.result);
+                player.style.display = "none";
+                result_view.style.display = "block";
+                faiNavBar.style.display = "none";
+                $("#loader").hide();
+
+                var resHtml = "<ul class='list-group'>";
+
+                if (data.result.length > 0) {
+                  $("#cardEmpty").hide();
+                  data.result.forEach(element => {
+                    resHtml += "<li class='list-group-item'>" + element.plate_number + "</li>";
+                  });
+                } else {
+                  $("#cardEmpty").show();
+                }
+
+                resHtml += "</ul>";
+
+                document.getElementById('cardResult').innerHTML = resHtml;
+                // document.getElementById('cardTitle').innerText = "Result";
+                $("#cardImage").attr('src', 'data:image/png;base64,' + data.image);
+
+              },
+              error: function (error) {
+                console.log("Error:");
+                console.log(error);
+              }
+            });
+          }
+
+          download_img = function (el) {
+            // get image URI from canvas object
+            var imageURI = canvas.toDataURL("image/jpg");
+            el.href = imageURI;
+          };
+        </script>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Copyright Section -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+
+
+  <!-- All Javascripts -->
+  <!-- Jquery -->
+  <script src="assets/js/jquery.min.js"></script>
+
+  <!-- Bootstrap -->
+  <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+
+  <!-- Common -->
+  <script type="text/javascript" src="assets/js/common.js"></script>
+
+  <!-- All Javascripts -->
 </body>
+
 </html>
