@@ -115,6 +115,14 @@
                   onclick="scanImage(this);">Scan</button>
               </td>
 
+              <td class="text-center">
+                <button id="openButton" type="button" style="height: 60px; width:150px" class="btn btn-primary btn-lg"
+                  onclick="openImage(this);">Open</button>
+                <input type="file" id="image_chosen" style="display:none;" onchange="fileSelected(this);"
+                  accept="image/jpeg, image/png, image/jpg" />
+
+              </td>
+
               <td style="display: none;" class="text-center"><a id="download" download="falcImage.jpg" href=""
                   onclick="download_img(this);"><canvas id="canvas" width="10px" height="10px"></canvas></a></td>
               <td style="display: none;" class="text-center"><img
@@ -184,25 +192,25 @@
             return new Blob([u8arr], { type: mime });
           }
 
-          scanImage = function (event) {
-            console.log('Scanning...');
+          openImage = function (event) {
+            console.log('Open Image...');
+            document.getElementById('image_chosen').click();
+          }
 
-            screenshot.width = player.videoWidth;
-            screenshot.height = player.videoHeight;
-            // Draw image frame to the canvas
-            context_scr.drawImage(player, 0, 0, screenshot.width, screenshot.height);
+          fileSelected = function (input) {
+            var selectedImage = input.files[0];
+            var reader = new FileReader();
+            reader.readAsArrayBuffer(selectedImage);
+            reader.onload = function () {
+              const blob = new Blob([reader.result])
+              var formData = new FormData();
+              formData.append("file", selectedImage);
+              uploadImage(formData);
+            }
+          }
 
-            var formData = new FormData(),
-              uploadedImageName = 'image.jpg';
-
-            var imageURI = screenshot.toDataURL("image/jpg");
-
-
-            const blob = dataURItoBlob(imageURI);
-            // console.log(JSON.stringify(blob));
-
+          uploadImage = function (formData) {
             $("#loader").show();
-            formData.append("file", blob);
             $.ajax({
               data: formData,
               type: "POST",
@@ -241,6 +249,30 @@
                 console.log(error);
               }
             });
+          }
+
+
+          scanImage = function (event) {
+            console.log('Scanning...');
+
+            screenshot.width = player.videoWidth;
+            screenshot.height = player.videoHeight;
+            // Draw image frame to the canvas
+            context_scr.drawImage(player, 0, 0, screenshot.width, screenshot.height);
+
+            var formData = new FormData(),
+              uploadedImageName = 'image.jpg';
+
+            var imageURI = screenshot.toDataURL("image/jpg");
+
+
+            const blob = dataURItoBlob(imageURI);
+            formData.append("file", blob);
+
+            uploadImage(formData);
+            // console.log(JSON.stringify(blob));
+
+
           }
 
           download_img = function (el) {
