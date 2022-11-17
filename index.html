@@ -150,7 +150,7 @@
           };
 
           // const baseUrl = 'https://nzmdn.duckdns.org/api'
-          const baseUrl = 'http://0.0.0.0:8000'
+          const baseUrl = window.location.protocol + "//" + window.location.host+ ':8000';
 
           captureButton.addEventListener('click', () => {
             // Draw the video frame to the canvas.
